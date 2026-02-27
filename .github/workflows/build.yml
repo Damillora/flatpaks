@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:    
+      - '**'        # matches every branch
+      - '!actions'   # excludes master
+
+name: Flatpak build
+jobs:
+  flatpak:
+    name: "Flatpak"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - name: opencloud-desktop
+            manifest: eu.opencloud.desktop.opencloud.yml
+            image: ghcr.io/flathub-infra/flatpak-github-actions:kde-6.10
+    container:
+      image: ${{ matrix.branch.image }}
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ matrix.branch.name }}
+        submodules: 'true'
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+      with:
+        bundle: ${{ matrix.branch.name }}.flatpak
+        manifest-path:  ${{ matrix.branch.manifest }}
+        cache-key: flatpak-builder-${{ matrix.branch.name }}-${{ github.sha }}
+        arch: x86_64
+    - uses: flatpak/flatpak-github-actions/flat-manager@v6
+      name: "Deploy"
+      with:
+        repository: synchronists
+        flat-manager-url: https://flatpak.aemeath.nanao.moe
+        token: ${{ secrets.SYNCHRONISTS_TOKEN }}
