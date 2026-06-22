@@ -1,0 +1,26 @@
+From 725079b67bd755ae928d23bd7aab1ee2762541cb Mon Sep 17 00:00:00 2001
+From: Damillora <developer@damillora.com>
+Date: Fri, 27 Feb 2026 14:33:18 +0700
+Subject: [PATCH 1/4] Add Linux application ID to CMakeLists
+
+---
+ OPENCLOUD.cmake | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/OPENCLOUD.cmake b/OPENCLOUD.cmake
+index 9ecef35b9..454d3e1d3 100644
+--- a/OPENCLOUD.cmake
++++ b/OPENCLOUD.cmake
+@@ -15,6 +15,9 @@ endif()
+ # TODO: re enable once we got icons
+ #set( MAC_INSTALLER_BACKGROUND_FILE "${CMAKE_SOURCE_DIR}/admin/osx/installer-background.png")
+ 
++set( LINUX_PACKAGE_SHORTNAME "opencloud" )
++set( LINUX_APPLICATION_ID "${APPLICATION_REV_DOMAIN}.${LINUX_PACKAGE_SHORTNAME}")
++
+ set( THEME_CLASS            "OpenCloudTheme" )
+ 
+ set( THEME_INCLUDE          "opencloudtheme.h" )
+-- 
+2.52.0
+

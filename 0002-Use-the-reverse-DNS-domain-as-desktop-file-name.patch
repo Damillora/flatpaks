@@ -1,0 +1,25 @@
+From 1611af4e088460443363212d1d04112032fe7535 Mon Sep 17 00:00:00 2001
+From: Damillora <developer@damillora.com>
+Date: Fri, 27 Feb 2026 13:38:24 +0700
+Subject: [PATCH 2/4] Use the reverse DNS domain as desktop file name
+
+---
+ src/gui/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
+index ced683994..5dc7c9bcc 100644
+--- a/src/gui/CMakeLists.txt
++++ b/src/gui/CMakeLists.txt
+@@ -216,6 +216,6 @@ ecm_finalize_qml_module(OpenCloudGui DESTINATION ${KDE_INSTALL_QMLDIR})
+ 
+ if(UNIX AND NOT APPLE)
+     configure_file(${CMAKE_SOURCE_DIR}/opencloud.desktop.in
+-                   ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
+-    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications )
++                   ${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.desktop)
++    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications )
+ endif()
+-- 
+2.52.0
+
