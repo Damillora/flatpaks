@@ -3,6 +3,7 @@ on:
     branches:    
       - '**'        # matches every branch
       - '!actions'   # excludes master
+  workflow_dispatch:
 
 name: Flatpak build
 jobs:
@@ -15,7 +16,7 @@ jobs:
         branch:
           - name: opencloud-desktop
             manifest: eu.opencloud.desktop.opencloud.yml
-            image: ghcr.io/flathub-infra/flatpak-github-actions:kde-6.10
+            image: ghcr.io/flathub-infra/flatpak-github-actions:kde-6.11
     container:
       image: ${{ matrix.branch.image }}
       options: --privileged
