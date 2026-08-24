@@ -39,3 +39,28 @@ jobs:
           else
             echo "changes_detected=false" >> "$GITHUB_OUTPUT"
           fi
+  build-flatpak:
+    needs: update-manifest
+    if: needs.update-manifest.outputs.changes_detected == 'true'
+    name: "Build Flatpak"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: helium
+        submodules: 'true'
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+      with:
+        bundle: helium.flatpak
+        manifest-path: net.imput.helium.yml
+        cache-key: flatpak-builder-helium-${{ github.sha }}
+        arch: x86_64
+    - uses: flatpak/flatpak-github-actions/flat-manager@v6
+      name: "Deploy"
+      with:
+        repository: synchronists
+        flat-manager-url: https://flatpak.aemeath.nanao.moe
+        token: ${{ secrets.SYNCHRONISTS_TOKEN }}
