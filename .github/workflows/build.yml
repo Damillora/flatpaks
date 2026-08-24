@@ -9,6 +9,7 @@ on:
         options:
           - opencloud-desktop
           - flora-desktop
+          - helium
 
 name: Flatpak build
 jobs:
@@ -22,8 +23,10 @@ jobs:
     - run: |
         if [ "${{ inputs.branch }}" = "opencloud-desktop" ]; then
           echo "FLATPAK_MANIFEST=eu.opencloud.desktop.opencloud.yml" >> $GITHUB_ENV
-        else
+        elif [ "${{ inputs.branch }}" = "flora-desktop" ]; then
           echo "FLATPAK_MANIFEST=com.damillora.flora.yml" >> $GITHUB_ENV
+        elif [ "${{ inputs.branch }}" = "helium" ]; then
+          echo "FLATPAK_MANIFEST=net.imput.helium.yml" >> $GITHUB_ENV
         fi
     - uses: actions/checkout@v4
       with:
