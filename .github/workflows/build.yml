@@ -1,8 +1,14 @@
 on:
-  push:
-    branches:    
-      - '**'        # matches every branch
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - opencloud-desktop
+          - flora-desktop
 
 name: Flatpak build
 jobs:
@@ -20,18 +26,24 @@ jobs:
             manifest: com.damillora.flora.yml
             image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
     container:
-      image: ${{ matrix.branch.image }}
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
       options: --privileged
     steps:
+    - run: |
+        if [ "${{ inputs.branch }}" = "opencloud-desktop" ]; then
+          echo "FLATPAK_MANIFEST=eu.opencloud.desktop.opencloud.yml" >> $GITHUB_ENV
+        else
+          echo "FLATPAK_MANIFEST=com.damillora.flora.yml" >> $GITHUB_ENV
+        fi
     - uses: actions/checkout@v4
       with:
-        ref: ${{ matrix.branch.name }}
+        ref: ${{ inputs.branch }}
         submodules: 'true'
     - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
       with:
-        bundle: ${{ matrix.branch.name }}.flatpak
-        manifest-path:  ${{ matrix.branch.manifest }}
-        cache-key: flatpak-builder-${{ matrix.branch.name }}-${{ github.sha }}
+        bundle: ${{ inputs.branch }}.flatpak
+        manifest-path:  ${{ env.FLATPAK_MANIFEST }}
+        cache-key: flatpak-builder-${{ inputs.branch }}-${{ github.sha }}
         arch: x86_64
     - uses: flatpak/flatpak-github-actions/flat-manager@v6
       name: "Deploy"
