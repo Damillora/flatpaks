@@ -118,8 +118,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/opencloud-eu/desktop
-        tag: v3.0.3
-        commit: 72fe8fb78e3e8b7dc9d2e54dfb497660e729cec3
+        tag: v4.0.0
+        commit: 9f701e6db2e101cb3247d3331647a60266e83b0f
         x-checker-data:
           type: json
           url: https://api.github.com/repos/opencloud-eu/desktop/releases/latest
