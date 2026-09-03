@@ -113,8 +113,6 @@ modules:
       - -DQT_MAJOR_VERSION=6
     cleanup:
       - /include
-    post-install:
-      - install -Dm644 -t /app/share/metainfo eu.opencloud.desktop.opencloud.metainfo.xml
     sources:
       - type: git
         url: https://github.com/opencloud-eu/desktop
