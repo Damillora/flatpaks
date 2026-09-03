@@ -1,16 +1,5 @@
-From 844f3bf66dc6301aa13c9440b1a2ba8e1917ddbc Mon Sep 17 00:00:00 2001
-From: Damillora <developer@damillora.com>
-Date: Fri, 27 Feb 2026 13:41:18 +0700
-Subject: [PATCH 3/4] Rename icons to use reverse DNS
-
----
- opencloud.desktop.in    | 2 +-
- opencloudcmd.desktop.in | 2 +-
- src/gui/CMakeLists.txt  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
 diff --git a/opencloud.desktop.in b/opencloud.desktop.in
-index 8137aa021..4320158f5 100644
+index 8137aa021..33419dbf1 100644
 --- a/opencloud.desktop.in
 +++ b/opencloud.desktop.in
 @@ -5,7 +5,7 @@ Exec=@APPLICATION_EXECUTABLE@ --showsettings
@@ -18,12 +7,12 @@ index 8137aa021..4320158f5 100644
  Comment=@APPLICATION_NAME@ desktop synchronization client
  GenericName=Folder Sync
 -Icon=@APPLICATION_ICON_NAME@
-+Icon=@LINUX_APPLICATION_ID@
++Icon=@APPLICATION_REV_DOMAIN@.@APPLICATION_EXECUTABLE@
  Keywords=@APPLICATION_NAME@;syncing;file;sharing;
  X-GNOME-Autostart-Delay=3
  MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
 diff --git a/opencloudcmd.desktop.in b/opencloudcmd.desktop.in
-index 26a6eed02..34a68dd4b 100644
+index 26a6eed02..b4dbd7068 100644
 --- a/opencloudcmd.desktop.in
 +++ b/opencloudcmd.desktop.in
 @@ -6,7 +6,7 @@ Exec=@APPLICATION_EXECUTABLE@cmd
@@ -31,23 +20,35 @@ index 26a6eed02..34a68dd4b 100644
  Comment=@APPLICATION_NAME@ commandline synchronization client
  GenericName=Folder Sync Commandline
 -Icon=@APPLICATION_ICON_NAME@
-+Icon=@LINUX_APPLICATION_ID@
++Icon=@APPLICATION_REV_DOMAIN@.@APPLICATION_EXECUTABLE@
  Keywords=@APPLICATION_NAME@;syncing;file;sharing;
  X-AppImage-Integrate=false
  NoDisplay=true
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 5dc7c9bcc..1d7560ccd 100644
+index 551fbbf92..b44bb9fe0 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
-@@ -196,7 +196,7 @@ if(NOT APPLE)
+@@ -195,7 +195,7 @@ if(NOT APPLE)
          foreach(_file ${_icons})
              string(REPLACE "${OEM_THEME_DIR}/theme/colored/" "" _res ${_file})
              string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
 -            install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${KDE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps)
-+            install(FILES ${_file} RENAME ${LINUX_APPLICATION_ID}.png DESTINATION ${KDE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps)
++            install(FILES ${_file} RENAME ${APPLICATION_REV_DOMAIN}.${APPLICATION_EXECUTABLE}.png DESTINATION ${KDE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps)
          endforeach(_file)
      endif()
  
--- 
-2.52.0
-
+@@ -214,11 +214,12 @@ install(TARGETS opencloud OpenCloudGui ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+ ecm_finalize_qml_module(OpenCloudGui DESTINATION ${KDE_INSTALL_QMLDIR})
+ 
+ if(UNIX AND NOT APPLE)
++
+     configure_file(${CMAKE_SOURCE_DIR}/opencloud.desktop.in
+-                   ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop
++                   ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_REV_DOMAIN}.${APPLICATION_EXECUTABLE}.desktop
+                    @ONLY
+     )
+-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications)
++    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_REV_DOMAIN}.${APPLICATION_EXECUTABLE}.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications)
+ 
+     configure_file(${CMAKE_SOURCE_DIR}/opencloud.metainfo.xml.in
+             ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_REV_DOMAIN}.${APPLICATION_EXECUTABLE}.metainfo.xml

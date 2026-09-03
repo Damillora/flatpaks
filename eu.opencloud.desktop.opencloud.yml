@@ -127,12 +127,4 @@ modules:
           version-query: $tag | sub("^[vV]"; "")
           timestamp-query: .published_at
       - type: patch
-        path: 0001-Add-Linux-application-ID-to-CMakeLists.patch
-      - type: patch
-        path: 0002-Use-the-reverse-DNS-domain-as-desktop-file-name.patch
-      - type: patch
-        path: 0003-Rename-icons-to-use-reverse-DNS.patch
-      - type: patch
-        path: 0004-Remove-redundant-application-name.patch
-      - type: file
-        path: eu.opencloud.desktop.opencloud.metainfo.xml
+        path: flatpak.patch
